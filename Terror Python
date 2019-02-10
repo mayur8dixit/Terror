@@ -64,3 +64,13 @@ ANS-   data.loc[data.eval("country_txt=='India' or country_txt=='Afganistan' or 
 
 11.A.List the number of suicides attacks and average kills by Af-Pak-India vs ROW.
 data1.groupby("d",as_index=False)[['nkill','suicide']].agg({'nkill':np.mean,'suicide':np.sum})
+                d                  nkill              suicide
+0               LOCAL              1.788422            480
+1               RAW                2.460740            4291
+
+
+
+
+11.b Rename columns in the output as Average_Kills for average kills
+data.groupby("d",as_index=False).agg({'nkill':np.mean}).rename(columns={'nkill':'Average Kill'})
+
