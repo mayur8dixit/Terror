@@ -1,0 +1,37 @@
+import pandas as pd
+import numpy as np 
+from pandas import DataFrame, Series
+import os
+import csv
+
+os.chdir('D:\Python for ML\Data mainpulation with python')
+data=pd.read_csv('terror.csv',sep=',', header=0, encoding='latin')
+data.head()
+data.columns.tolist()
+data.shape
+
+1.#How many attacks happened in India?
+data[data['country_txt']=="India"].shape[0]    or 
+data.query("country_txt== 'India'").shape[0]
+ANS-9940
+
+2#How many attacks happened in India and upto 3 people were killed
+data.query("country_txt=='India'")[data['nkill']<=3].shape[0]
+ANS-8362
+
+#3 Extract the city and summary for attacks above
+#Use country_txt, nkill and summary columns
+data.query("country_txt=='India'").sort_values('nkill', ascending=False)['summary'].head(10)
+
+#4 In a single terror incident in India, find out top 5 cities by number killed#
+#Hint: Use each row as as a unique terror incident. Use country_txt, nkill and city columns
+data.query("country_txt=='India'").sort_values('nkill', ascending=False)['city'].head(5)
+
+#5 In a single terror incident in India, find out top 5 cities by number killed and wounded
+data.query("country_txt=='India'").sort_values('nwound', ascending=False)['city'].head(5)
+
+#6How many attacks were successful that were suicide attacks?
+#Hint: Use suicide and success columns
+data.query('suicide').sort_values('success')
+data['sui_success']=data.query("success==1")['suicide']
+data['sui_success'].shape[0]
