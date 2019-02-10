@@ -35,3 +35,32 @@ data.query("country_txt=='India'").sort_values('nwound', ascending=False)['city'
 data.query('suicide').sort_values('success')
 data['sui_success']=data.query("success==1")['suicide']
 data['sui_success'].shape[0]
+ANS-156772
+
+7.Label all the incidents where the number killed was more than as 5 as severe
+data['severity']=(data['nkill']>5).map({True:'Severe',False:'Moderate'})
+data['severity']
+
+8.def get_sum(x): return np.sum(x)
+data1[['suicide','sui_success']].apply(get_sum,axis=0)
+suicide        4771.0
+sui_success    4260.0
+dtype: float64
+
+
+9.Create a new category representing if the incident occured in Afghanistan,
+Pakistan or India as one level of the category and all the other countries as
+another level. Label all other countries as ROW and new column which contains
+the new category as ‘Local’ in the data.
+ANS-   data.loc[data.eval("country_txt=='India' or country_txt=='Afganistan' or country_txt=='Pakistan'"), 'd'] = 'LOCAL'
+  data['d']
+  data.loc[data.eval("country_txt!='India' and country_txt!='Afganistan' and country_txt!='Pakistan'"), 'd'] = 'RAW'
+  data['d']
+10.How many incidents happened in Af-Pak-India vs ROW?
+ ANS-  print(data1['d'].value_counts())
+   RAW      134064
+   LOCAL     22708
+   Name: d, dtype: int64
+
+11.A.List the number of suicides attacks and average kills by Af-Pak-India vs ROW.
+data1.groupby("d",as_index=False)[['nkill','suicide']].agg({'nkill':np.mean,'suicide':np.sum})
